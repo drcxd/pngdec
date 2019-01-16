@@ -68,15 +68,27 @@ int main(int argc, char *argv[])
 
     png_read_info(png_ptr, info_ptr);
 
-    int width, height;
+    unsigned width, height;
     int bit_depth, color_type, interlace_type, compression_type, filter_method;
     png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, &interlace_type,
         &compression_type, &filter_method);
-    printf("width\t%d\theight\t%d\n", width, height);
-    printf("bit_depth\t%d\n", bit_depth);
-    printf("color_type\t%d\n", color_type);
-    printf("interlace_type\t%d\n", interlace_type);
-    printf("compression_type\t%d\n", compression_type);
-    printf("filter_method\t%d\n", filter_method);
+    printf("width\t%u\theight\t%u\n", width, height);
+    printf("bit_depth\t\t%d\n", bit_depth);
+    printf("color_type\t\t%d\n", color_type);
+    printf("interlace_type\t\t%d\n", interlace_type);
+    printf("compression_type\t\t%d\n", compression_type);
+    printf("filter_method\t\t%d\n", filter_method);
+
+    png_bytep row_pointers[height];
+    for (unsigned row = 0; row < height; ++row)
+        row_pointers[row] = NULL;
+    for (unsigned row = 0; row < height; ++row)
+        row_pointers[row] = png_malloc(png_ptr, png_get_rowbytes(png_ptr, info_ptr));
+    printf("bytes per row %u\n", png_get_rowbytes(png_ptr, info_ptr));
+
+    for (unsigned y = 0; y < height; ++y)
+        png_read_rows(png_ptr, &row_pointers[y], NULL, 1);
+    printf("read finished\n");
+    
     return 0;
 }

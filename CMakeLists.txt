@@ -13,6 +13,9 @@ find_path (LIBPNG_INCLUDES png.h
 
 include_directories (${LIBPNG_INCLUDES})
 
+set(GCC_FLAGS -g)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${GCC_FLAGS}")
+
 add_executable (libpngdec libpngdec.c)
 
 target_link_libraries (libpngdec ${PNG_LIBRARY})
